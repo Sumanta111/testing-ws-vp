@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import VoicePing from 'vp-websocket';
 import { auth } from './authentication';
 import sharedPreferences from './sharedPreferences';
-const uuidv4 = require('uuid/v4');
+//const uuidv4 = require('uuid/v4');
 
 let _voicePing;
+let _ping;
 
 class App extends Component {
 
@@ -24,6 +25,12 @@ class App extends Component {
     }
   }
 
+  onHandlePingEveryHalfMin = () => {
+    _ping =  setInterval(()=>{
+      _voicePing.pingWebsocket();
+    },30000);
+  }
+
   onLogin = () => {
     auth.autherise(this.onLoginCallback, 'testUser1234', 'testuser1234');
   }
@@ -32,6 +39,7 @@ class App extends Component {
     sharedPreferences.shared.removeAuthUser();
     console.log("Logout Successfull");
     _voicePing.disConnectWebsocket();
+    clearInterval(_ping);
     console.log("disconnect websocket Successfull");
   }
 
@@ -49,16 +57,9 @@ class App extends Component {
     console.log("Login Successfull");
     console.log("Starting connect to Websocket");
     _voicePing = new VoicePing(data,data.socket_url);
-    this.preventMultipleTab();
     _voicePing.connectToWebsocket();
+    this.onHandlePingEveryHalfMin();
   }
-
-  preventMultipleTab = () => {
-    let uId= JSON.parse(sharedPreferences.shared.getAuthUser()).id;
-    let timeStamp= new Date().getTime();
-    let uuid= "&deviceId="+ uId+ "_"+ uuidv4()+ "_"+ timeStamp;
-    sessionStorage.setItem("tabId", uuid)
-}
 
 doConnectionCheck = () => {
   _voicePing.pingWebsocket();
