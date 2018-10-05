@@ -32,7 +32,7 @@ class App extends Component {
   }
 
   onLogin = () => {
-    auth.autherise(this.onLoginCallback, 'testUser1234', 'testuser1234');
+    auth.autherise(this.onLoginCallback, 'user2@sumanta.com', '1234');
   }
 
   onLogout = () => {

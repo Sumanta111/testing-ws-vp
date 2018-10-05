@@ -7,7 +7,7 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-scripts": "1.1.5",
-    "vp-websocket": "^1.1.4"
+    "vp-websocket": "file:../npm-module-boilerplate/vp-websocket-1.1.4.tgz"
   },
   "scripts": {
     "start": "react-scripts start",
